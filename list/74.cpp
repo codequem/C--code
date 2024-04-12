@@ -5,6 +5,7 @@ void bubble_sort(int *arr, int len);
 void select_sort(int *arr, int len);
 void insert_sort(int *arr, int len);
 void merge_sort(int *arr, int *temp, int s, int e);
+void quick_sort(int *arr, int len);
 void merge(int *source, int *temp, int s, int mid, int e);
 void swap(int &a, int &b);
 int main(void)
@@ -15,6 +16,7 @@ int main(void)
     // insert_sort(arr, 5);
     // int temp[5];
     // merge_sort(arr, temp, 0, 4);
+    quick_sort(arr, 5);
     for (int i = 0; i < 5; i++)
         cout << arr[i] << ' ';
     return 0;
@@ -68,8 +70,26 @@ void merge_sort(int *arr, int *temp, int s, int e)
         return;
     int mid = (e + s) >> 1;
     merge_sort(arr, temp, s, mid);
-    merge_sort(arr, temp, mid+1, e);
+    merge_sort(arr, temp, mid + 1, e);
     merge(arr, temp, s, mid, e);
+}
+
+void quick_sort(int *arr, int len)
+{
+    if (len <= 1)
+        return;
+    int i = 0, j = len - 1;
+    while (i != j)
+    {
+        for (; arr[j] < arr[0] && i != j; j--)
+            ;
+        for (; arr[i] >= arr[0] && i != j; i++)
+            ;
+        swap(arr[i], arr[j]);
+    }
+    swap(arr[i], arr[0]);
+    quick_sort(arr, i);
+    quick_sort(arr + i + 1, len - i - 1);
 }
 
 void merge(int *source, int *temp, int s, int mid, int e)
