@@ -1,3 +1,4 @@
+#pragma once
 class Operation
 {
 private:
@@ -5,7 +6,7 @@ private:
     double _numberB = 0;
 
 public:
-    Operation();
+    Operation() = default;
     ~Operation();
     double getNumberA();
     double getNumberB();

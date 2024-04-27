@@ -2,24 +2,30 @@ export BUILD_VER := DEBUG
 export CXXFLAGS := -std=c++11 -Wall
 export RM := rm -f
 
-vpath %.cpp ./
-vpath %.h ./
+vpath %.cpp ./src
+vpath %.h ./header
 
-.PHONY:all clean
+.PHONY:all clean clean_cache
 all : 
 
-CXXINCLUDES = -I ./
-SRCS_WITH_PATH = $(wildcard ./*.cpp)
-SRCS = $(SRCS_WITH_PATH:./%.cpp=%.cpp)
+CXXINCLUDES = -I ./header
+SRCS_WITH_PATH = $(wildcard ./src/*.cpp)
+SRCS = $(SRCS_WITH_PATH:./src/%.cpp=%.cpp)
+DEPS = $(SRCS:.cpp=.d)
+DEPS_WITH_PATH = $(SRCS:%.cpp=./.d/%.d)
 OBJS = $(SRCS:.cpp=.o)
 OBJS_WITH_PATH = $(SRCS:%.cpp=./compile/%.o)
-
 TARGET_NAME := Calculator
 OUTDIR := ../debug/
 
 ifeq ($(BUILD_VER), DEBUG)
 CXXFLAGS += -g3
 endif
+
+-include $(DEPS)
+
+%.d:%.cpp
+	$(CXX) $(CXXINCLUDES) -MM $< > .d/$@
 
 %.o:%.cpp
 	$(CXX) $(CXXFLAGS) $(CXXINCLUDES) -c $< -o ./compile/$@
@@ -31,3 +37,6 @@ $(TARGET_NAME):$(OBJS)
 
 clean:
 	$(RM) $(OUTDIR)$(TARGET_NAME) $(OBJS_WITH_PATH)
+
+clean_cache:
+	$(RM) $(OBJS_WITH_PATH) $(DEPS_WITH_PATH)

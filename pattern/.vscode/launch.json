@@ -1,7 +1,6 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
       {
         "name": "C/C++ Runner: Debug Session",
         "type": "cppdbg",
@@ -9,8 +8,8 @@
         "args": [],
         "stopAtEntry": false,
         "externalConsole": false,
-        "cwd": "e:/THE LAST CODE/vsc CODE/C++code/pattern",
-        "program": "${fileDirname}/${fileBasenameNoExtension}",
+        "cwd": "${fileDirname}",
+        "program": "${workspaceFolder}\\debug\\Calculator.exe",
         "MIMode": "gdb",
         "miDebuggerPath": "gdb",
         "setupCommands": [
@@ -19,7 +18,7 @@
             "text": "-enable-pretty-printing",
             "ignoreFailures": true
           }
-        ],"preLaunchTask": "C/C++: gcc.exe 生成活动文件"
+        ],"preLaunchTask": "C/C++: make"
       }
     ]
   }

@@ -1,5 +1,7 @@
 #include "Operation.h"
 
+Operation::~Operation() {}
+
 double Operation::getNumberA()
 {
     return _numberA;
