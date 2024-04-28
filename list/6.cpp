@@ -22,7 +22,7 @@ int cmp(act x,act y);
 int main (void)
 {
     ios;
-    int n;
+    int n = 0;
     cin>>n;
     act_ act[n];
     for(int i=0;i<n;i++)

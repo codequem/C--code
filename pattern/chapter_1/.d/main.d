@@ -1,2 +1,1 @@
-main.o: src/main.cpp header/Add.h header/Operation.h header/Sub.h \
- header/Mul.h header/Div.h
+main.o: src/main.cpp header/Operation.h header/OperationFactory.h
