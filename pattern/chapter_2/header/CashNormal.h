@@ -4,5 +4,5 @@
 class CashNormal:public CashSuper
 {
 public:
-    double acceptCash();
+    double acceptCash(double money);
 };

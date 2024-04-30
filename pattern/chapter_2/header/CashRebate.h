@@ -1,8 +1,11 @@
 #pragma once
 #include "CashSuper.h"
 
-class CashReturn
+class CashRebate:public CashSuper
 {
+private:
+    double moneyRebate = 1.0;
 public:
-    double acceptCash();
+    void setRebate(double Rebate = 1.0);
+    double acceptCash(double money);
 };

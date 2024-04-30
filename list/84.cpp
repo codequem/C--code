@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
@@ -10,14 +11,16 @@ const string Name = "E22214111 程一帆";
 
 typedef struct PCB
 {
-    string PID = "";      // 进程号
-    double arrTime = 0;   // 到达时间
-    double runTime = 0;   // 运行时间
-    double startTime = 0; // 开始时间
-    double finTime = 0;   // 完成时间
-    double cycleTime = 0; // 周转时间
-    double wcTime = 0;    // 带权周转时间
-    char state = 'W';     // 作业状态，一开始默认就绪
+    string PID = "";       // 进程号
+    double arrTime = 0;    // 到达时间
+    double runTime = 0;    // 运行时间
+    double startTime = -1; // 开始时间
+    double finTime = 0;    // 完成时间
+    double cycleTime = 0;  // 周转时间
+    double wcTime = 0;     // 带权周转时间
+    double already_runningTime = 0;
+    char state = 'W'; // 作业状态，一开始默认就绪
+    int priority = 255;
     friend ostream &operator<<(ostream &out, PCB &P)
     {
         out << P.PID << ' ' << P.arrTime << ' ' << P.runTime << ' ' << P.startTime << ' ' << P.finTime << ' ' << P.cycleTime << ' ' << P.wcTime << ' ' << P.state << endl;
@@ -46,8 +49,23 @@ struct cmp2
     }
 };
 
+struct cmp3
+{
+    bool operator()(const PCB &P1, const PCB &P2)
+    {
+        if (P1.priority < P2.priority)
+            return true;
+        else if (P1.priority == P2.priority && P1.arrTime < P2.arrTime)
+            return true;
+        else
+            return false;
+    }
+};
+
 void FCFS(vector<PCB> &Process);
 void SJF(vector<PCB> &Process);
+void PSA(vector<PCB> &Process);
+void RR(vector<PCB> &Process, int TimeSlice);
 void print(vector<PCB> &Process);
 
 int main(void)
@@ -58,22 +76,49 @@ int main(void)
     cout << Name << endl;
     cout << "请输入作业个数:";
     cin >> num;
-    cout << "请输入各作业的信息(格式：作业名 到达时间 服务时间)" << endl;
-    for (int i = 0; i < num; i++)
-    {
-        cin >> job.PID >> job.arrTime >> job.runTime;
-        Process.push_back(job);
-    }
+    int TimeSlice = 0;
     int flag;
-    cout << "您要使用哪种调度算法? 1:FCFS 2:SJF";
+    cout << "您要使用哪种调度算法? 1:FCFS 2:SJF 3:PSA 4:RR ";
     cin >> flag;
     switch (flag)
     {
     case 1:
+        cout << "请输入各作业的信息(格式：作业名 到达时间 服务时间)" << endl;
+        for (int i = 0; i < num; i++)
+        {
+            cin >> job.PID >> job.arrTime >> job.runTime;
+            Process.push_back(job);
+        }
         FCFS(Process);
         break;
     case 2:
+        cout << "请输入各作业的信息(格式：作业名 到达时间 服务时间)" << endl;
+        for (int i = 0; i < num; i++)
+        {
+            cin >> job.PID >> job.arrTime >> job.runTime;
+            Process.push_back(job);
+        }
         SJF(Process);
+    case 3:
+        cout << "请输入各作业的信息(格式：作业名 到达时间 服务时间 优先级)" << endl;
+        for (int i = 0; i < num; i++)
+        {
+            cin >> job.PID >> job.arrTime >> job.runTime >> job.priority;
+            Process.push_back(job);
+        }
+        PSA(Process);
+        break;
+    case 4:
+        cout << "请输入各作业的信息(格式：作业名 到达时间 服务时间)" << endl;
+        for (int i = 0; i < num; i++)
+        {
+            cin >> job.PID >> job.arrTime >> job.runTime;
+            Process.push_back(job);
+        }
+        cout << "请输入时间片的长度(以一为单位):" << endl;
+        cin >> TimeSlice;
+        RR(Process, TimeSlice);
+        break;
     default:
         break;
     }
@@ -131,18 +176,88 @@ void SJF(vector<PCB> &Process)
         Process.push_back(*it);
 }
 
+void PSA(vector<PCB> &Process)
+{
+    vector<PCB> temp;
+    int now = 0;
+    do
+    {
+        int count = 0;
+        sort(Process.begin(), Process.end(), cmp3());
+        auto it = Process.begin();
+        while (now < (*it).arrTime)
+        {
+            if (it == Process.end())
+                break;
+            it++;
+            count++;
+        }
+        if (it == Process.end())
+            break;
+        (*it).state = 'R';
+        (*it).startTime = now;
+        (*it).finTime = now + (*it).runTime;
+        (*it).cycleTime = (*it).finTime - (*it).arrTime;
+        (*it).wcTime = (*it).cycleTime / (*it).runTime;
+        now = (*it).finTime;
+        (*it).state = 'F';
+        temp.push_back((*it));
+        Process.erase(Process.begin() + count);
+    } while (!Process.empty());
+    for (auto it = temp.begin(); it != temp.end(); it++)
+        Process.push_back(*it);
+}
+
+void RR(vector<PCB> &Process, int TimeSlice)
+{
+    queue<PCB> Q;
+    sort(Process.begin(), Process.end(), cmp1());
+    for (auto it = Process.begin(); it != Process.end(); it++)
+        Q.push(*it);
+    int now = 0;
+    int maxtime = 1000;
+    Process.clear();
+    while (!Q.empty() && now <= maxtime)
+    {
+        PCB ReadyProc = Q.front();
+        if (ReadyProc.arrTime <= now)
+        {
+            ReadyProc.state = 'R';
+            if (ReadyProc.startTime == -1)
+                ReadyProc.startTime = now;
+            if (ReadyProc.already_runningTime < ReadyProc.runTime)
+            {
+                now += min(TimeSlice, static_cast<int>(ReadyProc.runTime - ReadyProc.already_runningTime));
+                ReadyProc.already_runningTime = min(ReadyProc.already_runningTime + TimeSlice, ReadyProc.runTime);
+                ReadyProc.state = 'W';
+            }
+            if (ReadyProc.already_runningTime == ReadyProc.runTime)
+            {
+                ReadyProc.finTime = now;
+                ReadyProc.cycleTime = ReadyProc.finTime - ReadyProc.arrTime;
+                ReadyProc.wcTime = ReadyProc.cycleTime / ReadyProc.runTime;
+                Process.push_back(ReadyProc);
+                Q.pop();
+                continue;
+            }
+        }
+        Q.pop();
+        Q.push(ReadyProc);
+    }
+}
+
 void print(vector<PCB> &Process)
 {
     int sum_runtime = 0;
     double sum_time = 0.00;
     double atime;  // 平均周转时间
     double awtime; // 平均带权周转时间
-    printf("进程名  到达时间 运行时间 完成时间 周转时间 带权周转时间\n");
+    printf("进程名  到达时间  运行时间  完成时间  周转时间  带权周转时间  优先级\n");
     // cout << "进程名 到达时间 运行时间 完成时间 周转时间 带权周转时间" << endl;
     for (auto it = Process.begin(); it != Process.end(); it++)
     {
         cout << (*it).PID;
-        printf("       %.2f        %.2f       %.2f        %.2f        %.2f\n", (*it).arrTime, (*it).runTime, (*it).finTime, (*it).cycleTime, (*it).wcTime);
+        printf("       %.2f        %.2f       %.2f        %.2f        %.2f        %d\n", (*it).arrTime, (*it).runTime, (*it).finTime, (*it).cycleTime, (*it).wcTime, (*it).priority);
         // cout<<(*it)<<endl;
         sum_runtime += (*it).cycleTime;
         sum_time += (*it).wcTime;

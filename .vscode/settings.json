@@ -49,7 +49,8 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "string_view": "cpp"
     },
     "workbench.colorCustomizations": {
         //"editor.lineHighlightBackground": "#00dffd",

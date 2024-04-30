@@ -3,21 +3,11 @@
 class CashSuper
 {
 private:
-    
 public:
     CashSuper() = default;
-    ~CashSuper();
-    virtual double acceptCash()
+    ~CashSuper(){};
+    virtual double acceptCash(double money)
     {
-        double SumCash = 0;
-        return SumCash;
+        return 0;
     }
 };
-
-CashSuper::CashSuper()
-{
-}
-
-CashSuper::~CashSuper()
-{
-}
