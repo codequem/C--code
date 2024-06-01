@@ -1,0 +1,63 @@
+一：
+students classes
+(1):
+GRANT ALL PRIVILEGES
+ON TABLE students, TABLE classes
+TO U1
+WITH GRANT OPTION
+(2):
+GRANT SELECT,UPDATE(Home address)
+ON TABLE students
+TO U2
+(3):
+GRANT SELECT
+ON TABLE classes
+TO PUBLIC
+(4):
+GRANT SELECT,UPDATE
+ON TABLE students
+TO R1
+(5):
+GRANT R1
+TO U1
+WITH ADMIN OPTION
+
+二：
+Employees ,Departments
+(1):
+GRANT SELECT
+ON TABLE Employees, TABLE Departments
+TO 王明
+
+(2):
+GRANT DELETE ,INSERT
+ON TABLE Employees, TABLE Departments
+TO 李勇
+
+(3):
+GRANT SELECT, UPDATE(Salary)
+ON TABLE Employees
+TO 刘星
+
+(4):
+GRANT ALL PRIVILEGES
+ON TABLE Employees,TABLE Departments
+TO 周平
+WITH GRANT OPTION
+
+(5):
+REVOKE SELECT
+ON TABLE Employees, TABLE Departments
+FROM 王明
+
+REVOKE INSERT,DELETE
+ON TABLE Employees, TABLE Departments
+FROM 李勇
+
+REVOKE SELECT, UPDATE(Salary)
+ON TABLE Employees
+FROM 刘勇
+
+REVOKE ALL PRIVILEGES
+ON TABLE Employees, TABLE Departments
+FROM 周平

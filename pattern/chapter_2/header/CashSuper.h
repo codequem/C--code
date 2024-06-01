@@ -5,9 +5,6 @@ class CashSuper
 private:
 public:
     CashSuper() = default;
-    ~CashSuper(){};
-    virtual double acceptCash(double money)
-    {
-        return 0;
-    }
+    virtual ~CashSuper(){};
+    virtual double acceptCash(double money) = 0;
 };

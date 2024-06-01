@@ -9,7 +9,7 @@
         "stopAtEntry": false,
         "externalConsole": false,
         "cwd": "${fileDirname}",
-        "program": "${workspaceFolder}\\debug\\Calculator.exe",
+        "program": "${workspaceFolder}\\debug\\Cashier.exe",
         "MIMode": "gdb",
         "miDebuggerPath": "gdb",
         "setupCommands": [

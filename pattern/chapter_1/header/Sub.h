@@ -3,5 +3,5 @@
 class Sub : public Operation
 {
 public:
-    double GetResult();
+    double GetResult() override;
 };

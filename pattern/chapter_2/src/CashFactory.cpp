@@ -12,11 +12,11 @@ CashSuper *CashFactory::i(std::string mode)
     }
     else if (mode == "rebate")
     {
-        instance = new CashRebate();
+        instance = new CashRebate(0.8);
     }
     else if (mode == "return")
     {
-        instance = new CashReturn();
+        instance = new CashReturn(30,5);
     }
     else
     {

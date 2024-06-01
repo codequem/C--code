@@ -9,7 +9,7 @@
         "args": [],
         "stopAtEntry": false,
         "externalConsole": false,
-        "cwd": "e:/THE LAST CODE/vsc CODE/C++code/pattern",
+        "cwd": "e:/THE LAST CODE/vsc CODE/C++code",
         "program": "${fileDirname}/${fileBasenameNoExtension}",
         "MIMode": "gdb",
         "miDebuggerPath": "gdb",

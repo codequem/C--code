@@ -3,5 +3,5 @@
 class Div : public Operation
 {
 public:
-    double GetResult();
+    double GetResult() override;
 };
