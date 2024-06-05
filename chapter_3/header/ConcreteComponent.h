@@ -1,9 +1,9 @@
 #pragma once
+#include "Component.h" 
 
 class ConcreteComponent: public Component
 {
 public:
-    ConcreteComponent();
-    ~ConcreteComponent();
-    void operation() override;
+    ConcreteComponent() = default;
+    void Operation() override;
 };

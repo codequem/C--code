@@ -1,5 +1,6 @@
 #include "ConcreteComponent.h"
+#include <iostream>
 
-void ConcreteComponent::operation(){
-    std::cout << "ConcreteComponent operation" << std::endl;
+void ConcreteComponent::Operation(){
+    std::cout << "ConcreteComponent Operation()" << std::endl;
 }
