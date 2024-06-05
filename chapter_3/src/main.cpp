@@ -1,6 +1,9 @@
-#include "ConcreteComponent.h"
-#include "ConcreteDecorator_1.h"
-#include "ConcreteDecorator_2.h" 
+//#include "ConcreteComponent.h"
+//#include "ConcreteDecorator_1.h"
+//#include "ConcreteDecorator_2.h" 
+
+#include "Person.h"
+#include "Finery.h"
 
 
 int main(void)
@@ -14,6 +17,18 @@ int main(void)
     //decorator_2->SetComponent(*decorator_1);
     //decorator_2->Operation();
 
+    Person* person = new Person("Tom");
+    TShirt* tShirts = new TShirt();
+    BigTrouser* bigTrouser = new BigTrouser();
+    Sneakers* sneakers = new Sneakers();
+    Suit* suit = new Suit();
+
+    tShirts->decorate(person);
+    bigTrouser->decorate(tShirts);
+    sneakers->decorate(bigTrouser);
+    suit->decorate(sneakers);
+
+    suit->show();
     
     return 0;
 }
