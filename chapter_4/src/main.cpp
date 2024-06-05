@@ -1,8 +1,10 @@
 #include "Proxy.h"
+#include "RealSubject.h"
 
 int main()
 {
-    Proxy *proxy = new Proxy();
+    RealSubject *realSubject = new RealSubject("Proxy Pattern");
+    Proxy *proxy = new Proxy(realSubject);
     proxy->Request();
     delete proxy;
     return 0;
