@@ -7,19 +7,28 @@
 class CashContext
 {
 private:
-    CashSuper* cashsuper;
+    CashSuper *cashsuper;
+
 public:
-    CashContext(std::string mode){
+    CashContext(std::string mode)
+    {
         cashsuper = CashFactory::i(mode);
     }
-    CashContext(const CashContext & cashContext){
+    CashContext(const CashContext &cashContext)
+    {
         cashsuper = cashContext.cashsuper;
     };
-    ~CashContext(){};
-    CashContext& operator=(const CashContext& cls){
-        if(this != &cls)
+    ~CashContext()
+    {
+        if (cashsuper != nullptr)
+            delete cashsuper;
+        cashsuper = nullptr;
+    };
+    CashContext &operator=(const CashContext &cls)
+    {
+        if (this != &cls)
         {
-            if(cashsuper != nullptr)
+            if (cashsuper != nullptr)
             {
                 delete cashsuper;
                 cashsuper = nullptr;

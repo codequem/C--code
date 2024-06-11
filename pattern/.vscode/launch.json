@@ -9,7 +9,7 @@
         "stopAtEntry": false,
         "externalConsole": false,
         "cwd": "${fileDirname}",
-        "program": "${workspaceFolder}\\debug\\Cashier.exe",
+        "program": "${workspaceFolder}\\debug\\Factory_Method.exe",
         "MIMode": "gdb",
         "miDebuggerPath": "gdb",
         "setupCommands": [
